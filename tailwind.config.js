@@ -8,7 +8,7 @@ const convertToTWColor = (varName) => {
   };
 };
 
-const RATIO = 1.48;
+const RATIO = 1.24;
 const BASE = 1;
 const S1 = BASE * RATIO;
 const S2 = S1 * RATIO;

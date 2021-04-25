@@ -17,15 +17,16 @@
   }
 
   :root {
-      --color-background-dark: 241, 239, 228;
-      --color-background-base: 250, 249, 245;
+    /* 240,239,235 */
+      --color-background-dark: 240, 239, 235;
+      --color-background-base: 246, 246, 243;
       --color-background-light: 253, 253, 252;
-      --color-text-neutralLight: 27,24,14;
-      --color-text-neutral: 20,18,10;
-      --color-text-neutralDark: 14,12,7;
+      --color-text-neutralLight: 29,28,22;
+      --color-text-neutral: 17,17,13;
+      --color-text-neutralDark:   14,4,5;
       --color-accent-base: 202,5,77;
-      --color-errorDark: 252, 85,50;
-      --color-errorLight: 254, 171,154;
+      --color-errorDark: 240, 53,29;
+      --color-errorLight: 251, 204,197;
 
   }
 

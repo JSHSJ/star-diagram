@@ -16,7 +16,7 @@ const StarDiagramRenderer: React.FC<StarDiagramRendererProps> = ({segments, leve
 
   const createPolygon = (coordinates: Coordinate[], centerPoint: Coordinate, fill?: boolean) => {
     return (
-      <polygon points={coordinates.reduce((final, coord) => final.concat(`${coord[0]}, ${coord[1]}`), [] as string[]).join(' ')} x={centerPoint[0]} y={centerPoint[1]} fill={fill? 'currentColor' : 'none'} stroke="currentColor" className="c-fg" key={`polygon-${coordinates.join('-')}`} />
+      <polygon points={coordinates.reduce((final, coord) => final.concat(`${coord[0]}, ${coord[1]}`), [] as string[]).join(' ')} x={centerPoint[0]} y={centerPoint[1]} fill={fill? 'currentColor' : 'none'} stroke="currentColor" strokeWidth='1' className={fill ? 'text-skin-accent' : 'text-skin-neutral'} key={`polygon-${coordinates.join('-')}`} />
     )
   }
 
@@ -87,7 +87,7 @@ const StarDiagramRenderer: React.FC<StarDiagramRendererProps> = ({segments, leve
            ))}
            {allSegments.map((seg) => (
              <g key={`segment-${seg.label}-line-text`}>
-            <text className="c-fg" x={seg.textCoordinates[0]} y={seg.textCoordinates[1]} style={{transform: 'translate(-50%, 0)', transformBox: 'fill-box', transformOrigin: 'center center'}}>{seg.label}</text>
+            <text className="font-semibold text-skin-neutralLight" x={seg.textCoordinates[0]} y={seg.textCoordinates[1]} style={{transform: 'translate(-50%, 0)', transformBox: 'fill-box', transformOrigin: 'center center'}}>{seg.label}</text>
              <line x1={centerCoordinates[0]} y1={centerCoordinates[1]} x2={seg.levelCoordinates[seg.levelCoordinates.length-1][0]} y2={seg.levelCoordinates[seg.levelCoordinates.length-1][1]} stroke='currentColor' className="c-fg" />
              </g>
            ))}
