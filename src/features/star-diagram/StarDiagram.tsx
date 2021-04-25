@@ -37,7 +37,7 @@ const StarDiagram: React.FC<StarDiagramProps> = () => {
   return (
     <div className="">
       <div className="relative items-start stack-l lg:flex-row">
-      <div className="flex lg:sticky lg:top-m lg:left-0 lg:w-6/12 ">
+      <div className="flex w-full lg:sticky lg:top-m lg:left-0 lg:w-6/12 ">
       <StarDiagramRenderer segments={segments} levels={levels} config={config} />
       </div>
       <div className="w-full lg:max-w-lg controls lg:pl-12 lg:w-6/12">

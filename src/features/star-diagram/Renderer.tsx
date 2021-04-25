@@ -79,7 +79,7 @@ const StarDiagramRenderer: React.FC<StarDiagramRendererProps> = ({segments, leve
 
   return (
     <div className="w-full renderer">
-     <svg className="border-2 bg-skin-mutedDark text-skin-neutral border-skin-neutralDark" viewBox={`0 0 ${outerBoxWidth} ${outerBoxHeight}`}>
+     <svg className="w-full border-2 bg-skin-mutedDark text-skin-neutral border-skin-neutralDark" viewBox={`0 0 ${outerBoxWidth} ${outerBoxHeight}`}>
        <svg className="graph-container" x={config.svgConfig.padding} y={config.svgConfig.padding} width={config.svgConfig.width} height={config.svgConfig.height} viewBox={`0 0 ${config.svgConfig.width} ${config.svgConfig.height}`}>
          {config.debug && <g className="debug">
          <rect x={0} y={0} width={config.svgConfig.padding} height={config.svgConfig.padding} className="debug-rect" />
