@@ -14,9 +14,9 @@ const Input: React.FC<InputProps> = ({label, inputType, placeholder, onChange, v
 
 
   return (
-    <div className="input flex flex-col w-full">
-      <label id={`inputLabel-${label}`} htmlFor={`input-${label}`} className="text-lg font-bold">{label}</label>
-      <input type={inputType} name={`input-${label}`} id={`input-${label}`} value={value} placeholder={placeholder} onChange={onChange} className="border-2 border-skin-neutral text-skin-neutral text-lg p-2 focus:bg-skin-mutedLight focus:outline-none focus:ring-1 focus:ring-skin-neutral w-full" />
+    <div className="flex flex-col w-full input">
+      <label id={`inputLabel-${label}`} htmlFor={`input-${label}`} className="font-bold">{label}</label>
+      <input type={inputType} name={`input-${label}`} id={`input-${label}`} value={value} placeholder={placeholder} onChange={onChange} className="w-full border-2 px-s py-xs border-skin-neutral text-skin-neutral" />
     </div>
   );
 }

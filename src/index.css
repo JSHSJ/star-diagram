@@ -3,10 +3,93 @@
 @tailwind utilities;
 
 @layer base {
+  @font-face {
+    font-family: 'Iosevka Aile';
+    font-weight: 400;
+    src: url(./fonts/iosevka-aile-regular.woff2) format("woff2");
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Iosevka Aile';
+    font-weight: 600;
+    src: url(./fonts/iosevka-aile-semibold.woff2) format("woff2");
+    font-display: swap;
+  }
+
   :root {
-      --color-background-neutral: 240, 239, 235;
-      --color-text-neutral: 24,24,24;
-      --color-text-accent: #fae633;
+      --color-background-dark: 241, 239, 228;
+      --color-background-base: 250, 249, 245;
+      --color-background-light: 253, 253, 252;
+      --color-text-neutralLight: 27,24,14;
+      --color-text-neutral: 20,18,10;
+      --color-text-neutralDark: 14,12,7;
+      --color-accent-base: 202,5,77;
+      --color-errorDark: 252, 85,50;
+      --color-errorLight: 254, 171,154;
+
+  }
+
+  html {
+    @apply text-base bg-skin-mutedBase text-skin-neutral;
+  }
+
+  button:focus, input:focus, .default-focus:focus {
+    @apply outline-none focus:ring-1 focus:ring-skin-neutral;
+  }
+
+  .btn {
+    @apply font-semibold border-2 px-s py-xs border-skin-neutral bg-skin-mutedLight;
+  }
+
+  .btn-destructive {
+    @apply text-skin-errorDark hover:bg-skin-errorLight hover:text-skin-neutralLight;
+  }
+
+  .btn-friendly {
+
+  }
+
+  .stack {
+    @apply flex flex-col justify-start;
+  }
+
+  .stack-s {
+    @apply stack gap-y-s;
+  }
+
+  .stack-m {
+    @apply stack gap-y-m;
+  }
+
+  .stack-l {
+    @apply stack gap-y-l;
+  }
+
+  .box {
+  }
+
+  .box-m {
+    @apply box p-m;
+  }
+
+  .box-l {
+    @apply box p-l;
+  }
+
+  .cluster {
+    @apply flex flex-wrap items-center justify-start overflow-hidden;
+  }
+
+  .cluster-s {
+    @apply gap-s;
+  }
+
+  .cluster-m {
+    @apply gap-m;
+  }
+
+  .cluster-l {
+    @apply gap-l;
   }
 
 }
