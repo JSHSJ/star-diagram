@@ -11,6 +11,7 @@ export interface PointObject {
   label: string;
   levelCoordinates: Coordinate[];
   textCoordinates: Coordinate;
+  textTransform: number[];
   value: number;
   valueCoordinates: Coordinate;
 }

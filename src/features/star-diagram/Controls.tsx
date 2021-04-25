@@ -76,7 +76,7 @@ const Controls: React.FC<StarDiagramControlsProps> = ({segments, setSegments, le
       {segments.map((segment, idx) => (
         <div className="flex flex-row controls-input">
         <div className="w-full stack-s mr-m">
-        <Input value={segment.label} label={`Label`} onChange={(e) => changeLabelOfSegment(segment.key, e.target.value)} inputType="text" key={`Value-${segment.key}`} />
+        <Input value={segment.label} label={`Label`} onChange={(e) => changeLabelOfSegment(segment.key, e.target.value)} inputType="text" key={`Label-${segment.key}`} />
         <Input value={segment.value} label={`${segment.label} Value`} onChange={(e) => changeValueOfSegment(segment.key, e.target.value)} inputType="number" key={`Value-${segment.key}`} />
         </div>
         <button className="self-end ml-auto btn btn-destructive" onClick={() => deleteSegment(segment.key)}>

@@ -25,18 +25,29 @@ const StarDiagramRenderer: React.FC<StarDiagramRendererProps> = ({segments, leve
     const levelCoordinates = Array.from(Array(levels)).map((level, levelIdx) => {
       return [calcXOnCircle(index, (levelIdx + 1) *  levelRadiusPart), calcYOnCircle(index, (levelIdx + 1) *  levelRadiusPart)] as Coordinate
     })
-    const textCoordinates = [calcXOnCircle(index, (levels+1) *  levelRadiusPart), calcYOnCircle(index, (levels + 1) *  levelRadiusPart)] as Coordinate
+    const textCoordinates = [calcXOnCircle(index, radius + 48), calcYOnCircle(index, radius + 48)] as Coordinate
 
     const valueCoordinates = [calcXOnCircle(index, (segment.value) *  levelRadiusPart), calcYOnCircle(index, (segment.value) *  levelRadiusPart)] as Coordinate
 
+    const textTransform = calcTextTransform(index);
 
     return {
       label: segment.label,
       levelCoordinates,
       textCoordinates,
+      textTransform,
       value: segment.value,
-      valueCoordinates
+      valueCoordinates,
     }
+  }
+
+  const calcTextTransform = (idx: number): number[] => {
+    const degrees = (360 / segments.length * idx)
+    const degreesInRadians = degrees * Math.PI / 180;
+    const factor = degrees > 180 ? 2 - Math.abs(Math.cos(degreesInRadians)) : 0
+    const cos = Math.abs(Math.cos(degreesInRadians)) + factor
+    const sin = Math.abs(Math.sin(degreesInRadians))
+    return [cos * 50, sin * 25]
   }
 
   const calcXOnCircle = (idx: number, radius: number): number => {
@@ -86,8 +97,9 @@ const StarDiagramRenderer: React.FC<StarDiagramRendererProps> = ({segments, leve
              poly
            ))}
            {allSegments.map((seg) => (
-             <g key={`segment-${seg.label}-line-text`}>
-            <text className="font-semibold text-skin-neutralLight" x={seg.textCoordinates[0]} y={seg.textCoordinates[1]} style={{transform: 'translate(-50%, 0)', transformBox: 'fill-box', transformOrigin: 'center center'}}>{seg.label}</text>
+             <g key={`segment-${seg.textCoordinates.join('-')}-line-text`}>
+            <text className="font-semibold text-skin-neutralLight" x={seg.textCoordinates[0]} y={seg.textCoordinates[1]} style={{transform: `translate(-${seg.textTransform[0]}%, ${seg.textTransform[1]}%)`, transformBox: 'fill-box', transformOrigin: 'center center'}}>{seg.label}</text>
+
              <line x1={centerCoordinates[0]} y1={centerCoordinates[1]} x2={seg.levelCoordinates[seg.levelCoordinates.length-1][0]} y2={seg.levelCoordinates[seg.levelCoordinates.length-1][1]} stroke='currentColor' className="c-fg" />
              </g>
            ))}
