@@ -25,7 +25,7 @@ const StarDiagramRenderer: React.FC<StarDiagramRendererProps> = ({segments, leve
     const levelCoordinates = Array.from(Array(levels)).map((level, levelIdx) => {
       return [calcXOnCircle(index, (levelIdx + 1) *  levelRadiusPart), calcYOnCircle(index, (levelIdx + 1) *  levelRadiusPart)] as Coordinate
     })
-    const textCoordinates = [calcXOnCircle(index, radius + 48), calcYOnCircle(index, radius + 48)] as Coordinate
+    const textCoordinates = [calcXOnCircle(index, radius * 1.2), calcYOnCircle(index, radius * 1.2)] as Coordinate
 
     const valueCoordinates = [calcXOnCircle(index, (segment.value) *  levelRadiusPart), calcYOnCircle(index, (segment.value) *  levelRadiusPart)] as Coordinate
 
