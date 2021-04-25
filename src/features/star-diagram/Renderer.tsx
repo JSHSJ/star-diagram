@@ -1,8 +1,8 @@
 import React from 'react';
-import { Coordinate, PointObject, StarDiagramConfig } from './StartDiagram.types';
+import type { Coordinate, PointObject, Segment, StarDiagramConfig } from './StartDiagram.types';
 
 interface StarDiagramRendererProps {
-  segments: string[];
+  segments: Segment[];
   levels: number;
   config: StarDiagramConfig;
 }
@@ -16,22 +16,26 @@ const StarDiagramRenderer: React.FC<StarDiagramRendererProps> = ({segments, leve
 
   const createPolygon = (coordinates: Coordinate[], centerPoint: Coordinate, fill?: boolean) => {
     return (
-      <polygon points={coordinates.reduce((final, coord) => final.concat(`${coord[0]}, ${coord[1]}`), [] as string[]).join(' ')} x={centerPoint[0]} y={centerPoint[1]} fill="none" stroke="currentColor" className="c-fg" key={`polygon-${coordinates.join('-')}`} />
+      <polygon points={coordinates.reduce((final, coord) => final.concat(`${coord[0]}, ${coord[1]}`), [] as string[]).join(' ')} x={centerPoint[0]} y={centerPoint[1]} fill={fill? 'currentColor' : 'none'} stroke="currentColor" className="c-fg" key={`polygon-${coordinates.join('-')}`} />
     )
   }
 
-  const createPointObject = (label: string, index: number, levels: number): PointObject => {
+  const createPointObject = (segment: Segment, index: number, levels: number): PointObject => {
     const levelRadiusPart = radius / levels;
     const levelCoordinates = Array.from(Array(levels)).map((level, levelIdx) => {
       return [calcXOnCircle(index, (levelIdx + 1) *  levelRadiusPart), calcYOnCircle(index, (levelIdx + 1) *  levelRadiusPart)] as Coordinate
     })
     const textCoordinates = [calcXOnCircle(index, (levels+1) *  levelRadiusPart), calcYOnCircle(index, (levels + 1) *  levelRadiusPart)] as Coordinate
 
+    const valueCoordinates = [calcXOnCircle(index, (segment.value) *  levelRadiusPart), calcYOnCircle(index, (segment.value) *  levelRadiusPart)] as Coordinate
+
 
     return {
-      label,
+      label: segment.label,
       levelCoordinates,
       textCoordinates,
+      value: segment.value,
+      valueCoordinates
     }
   }
 
@@ -51,17 +55,20 @@ const StarDiagramRenderer: React.FC<StarDiagramRendererProps> = ({segments, leve
     return centerCoordinates[1] + radius * Math.sin(x)
     }
 
-  const allSegments = segments.map((point, index) => createPointObject(point, index, levels))
+  const allSegments = segments.map((seg, index) => createPointObject(seg, index, levels))
 
   const levelPolygons = Array.from(Array(levels)).map((level, levelIdx) => {
     const levelCoordinates = allSegments.map(seg => seg.levelCoordinates[levelIdx])
     return createPolygon(levelCoordinates, [centerCoordinates[0], centerCoordinates[1]], false)
   })
 
+  const valuePolygonCoordinates = allSegments.map(seg => seg.valueCoordinates);
+  const valuePolygon = createPolygon(valuePolygonCoordinates, [centerCoordinates[0], centerCoordinates[1]], true)
+
 
   return (
-    <div className="renderer w-full">
-     <svg className="bg-skin-mutedLight text-skin-neutral border-2 border-skin-neutral" viewBox={`0 0 ${outerBoxWidth} ${outerBoxHeight}`}>
+    <div className="w-full renderer">
+     <svg className="border-2 bg-skin-mutedDark text-skin-neutral border-skin-neutralDark" viewBox={`0 0 ${outerBoxWidth} ${outerBoxHeight}`}>
        <svg className="graph-container" x={config.svgConfig.padding} y={config.svgConfig.padding} width={config.svgConfig.width} height={config.svgConfig.height} viewBox={`0 0 ${config.svgConfig.width} ${config.svgConfig.height}`}>
          {config.debug && <g className="debug">
          <rect x={0} y={0} width={config.svgConfig.padding} height={config.svgConfig.padding} className="debug-rect" />
@@ -71,7 +78,6 @@ const StarDiagramRenderer: React.FC<StarDiagramRendererProps> = ({segments, leve
          </g> }
 
          {config.showCircle && (<g>
-           {/* <rect width={centerPoint.width} height={centerPoint.height} x={centerPoint.x - centerPoint.width / 2} y={centerPoint.y - centerPoint.height / 2} /> */}
            <circle cx={centerCoordinates[0]} cy={centerCoordinates[1]} r={radius} fill="none" stroke="currentColor" className="c-fg" />
 
          </g>)}
@@ -85,6 +91,7 @@ const StarDiagramRenderer: React.FC<StarDiagramRendererProps> = ({segments, leve
              <line x1={centerCoordinates[0]} y1={centerCoordinates[1]} x2={seg.levelCoordinates[seg.levelCoordinates.length-1][0]} y2={seg.levelCoordinates[seg.levelCoordinates.length-1][1]} stroke='currentColor' className="c-fg" />
              </g>
            ))}
+           {valuePolygon}
          </g>
 
 

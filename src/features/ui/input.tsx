@@ -15,7 +15,7 @@ const Input: React.FC<InputProps> = ({label, inputType, placeholder, onChange, v
 
   return (
     <div className="flex flex-col w-full input">
-      <label id={`inputLabel-${label}`} htmlFor={`input-${label}`} className="font-bold">{label}</label>
+      <label id={`inputLabel-${label}`} htmlFor={`input-${label}`} className="font-semibold">{label}</label>
       <input type={inputType} name={`input-${label}`} id={`input-${label}`} value={value} placeholder={placeholder} onChange={onChange} className="w-full border-2 px-s py-xs border-skin-neutral text-skin-neutral" />
     </div>
   );

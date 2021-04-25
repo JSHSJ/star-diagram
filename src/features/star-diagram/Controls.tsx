@@ -1,9 +1,11 @@
 import React from 'react';
 import Input from '../ui/input';
-
+import { ID, Segment } from './StartDiagram.types';
+import produce from 'immer';
+import { createSegmentId } from './helpers';
 interface StarDiagramControlsProps {
-  segments: string[];
-  setSegments: React.Dispatch<React.SetStateAction<string[]>>
+  segments: Segment[];
+  setSegments: React.Dispatch<React.SetStateAction<Segment[]>>
   levels: number;
   setLevels: React.Dispatch<React.SetStateAction<number>>
 }
@@ -20,43 +22,70 @@ const Controls: React.FC<StarDiagramControlsProps> = ({segments, setSegments, le
     }
   }
 
-
-  const updateValueInSegments = (newVal: string, idx: number) => {
-    const newSegments = Object.assign([], segments, {[idx]: newVal})
-    setSegments(newSegments)
+  const changeLabelOfSegment = (segmentKey: ID, newLabel: string) => {
+    const updatedSegments = produce(segments, draft => {
+      const index = draft.findIndex(seg => seg.key === segmentKey);
+      if (index !== -1) draft[index].label = newLabel
+    })
+    setSegments(updatedSegments)
   }
+
+  const changeValueOfSegment = (segmentKey: ID, newValue: string) => {
+    let val = parseInt(newValue, 10)
+    if (!val || val < 0){
+      val = 0
+    }
+    const updatedSegments = produce(segments, draft => {
+      const index = draft.findIndex(seg => seg.key === segmentKey);
+      if (index !== -1) draft[index].value = val
+    })
+    setSegments(updatedSegments)
+  }
+
+
 
   const addSegment = () => {
-    const newSegments = segments.concat('')
-    setSegments(newSegments)
-
+    const newSegment: Segment = {
+      key: createSegmentId(),
+      label: 'Change me',
+      value: 0
+    }
+    const updatedSegments = produce(segments, draft => {
+      draft.push(newSegment)
+  })
+    setSegments(updatedSegments)
   }
 
-  const deleteSegment = (idx: number) => {
-    const newSegments = segments.filter((val, index) => index !== idx)
+  const deleteSegment = (key: ID) => {
+    const newSegments = produce(segments, draft => {
+      const index = draft.findIndex(segment => segment.key === key)
+      console.log('deleting index', index)
+      if (index !== -1) draft.splice(index, 1)
+    })
     setSegments(newSegments)
   }
 
   return (
-    <div className="controls flex flex-col">
+    <div className="flex flex-col">
       <div className="mb-8">
         <Input value={levels} label={`Levels`} onChange={(e) => changeLevels(e.target.value)} inputType="number" key={`Value-Levels`} />
 
       </div>
 
-      <div className="flex flex-col space-y-4">
+      <div className="stack-l">
       {segments.map((segment, idx) => (
-        <div className="controls-input flex flex-row">
-        <div className="mr-4 w-full">
-        <Input value={segment} label={`Value-${idx}`} onChange={(e) => updateValueInSegments(e.target.value, idx)} inputType="text" key={`Value-${idx}`} />
+        <div className="flex flex-row controls-input">
+        <div className="w-full stack-s mr-m">
+        <Input value={segment.label} label={`Label`} onChange={(e) => changeLabelOfSegment(segment.key, e.target.value)} inputType="text" key={`Value-${segment.key}`} />
+        <Input value={segment.value} label={`${segment.label} Value`} onChange={(e) => changeValueOfSegment(segment.key, e.target.value)} inputType="number" key={`Value-${segment.key}`} />
         </div>
-        <button className="controls-delete ml-auto border-2 border-skin-neutral p-2 self-end hover:bg-skin-mutedLight" onClick={() => deleteSegment(idx)}>
+        <button className="self-end ml-auto btn btn-destructive" onClick={() => deleteSegment(segment.key)}>
         DEL
         </button>
       </div>
       ))}
       </div>
-      <button className="controls-add border-2 border-skin-neutral hover:bg-skin-mutedLight mt-8 p-2" onClick={() => addSegment()}>
+      <button className="mt-8 btn controls-add" onClick={() => addSegment()}>
         + Add
       </button>
     </div>

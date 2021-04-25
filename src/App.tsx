@@ -5,12 +5,12 @@ function App() {
 
 
   return (
-    <div className="App">
+    <div className="container mx-auto">
       {/* <header className="App-header">
         HEADER
       </header> */}
 
-      <div className="" style={{width: '90vw', margin: '80px auto'}}>
+      <div className="py-m px-s">
       <StarDiagram/>
 
       </div>
